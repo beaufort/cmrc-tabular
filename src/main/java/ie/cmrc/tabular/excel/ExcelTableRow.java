@@ -27,6 +27,7 @@ import ie.cmrc.util.Multimap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
 /**
@@ -78,7 +79,7 @@ public class ExcelTableRow extends AbstractTableRow {
         
         if (this.header!=null && this.row!=null) {
             Integer index = this.header.getValue(field);
-            if (index!=null) return (new ExcelTableCell(this.row.getCell(index)));
+            if (index!=null && this.row!=null) return (new ExcelTableCell(this.row.getCell(index)));
         }
         
         return new ExcelTableCell(null);
@@ -104,13 +105,12 @@ public class ExcelTableRow extends AbstractTableRow {
             List<Integer> indexes = langIndexes.getAll(lang);
             if (indexes != null) {
                 for (Integer index: indexes) {
-                    if (index != null) {
+                    if (index!=null && this.row!=null) {
                         map.put(lang, new ExcelTableCell(this.row.getCell(index)));
                     }
                 }
             }
         }
-        
         return map;
     }
     
@@ -130,11 +130,15 @@ public class ExcelTableRow extends AbstractTableRow {
         if (indexes != null) {
             for (Integer index: indexes) {
                 if (index != null) {
-                    cells.add(new ExcelTableCell(this.row.getCell(index)));
+                    if (this.row != null) {
+                        Cell cell = this.row.getCell(index);
+                        if (cell!=null) {
+                            cells.add(new ExcelTableCell(cell));
+                        }
+                    }
                 }
             }
         }
-        
         return cells;
     }
 

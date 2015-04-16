@@ -72,8 +72,8 @@ public class ExcelTableCell implements TableCell {
     public Boolean isEmpty() {
         return (this.cell==null ||
                 this.cell.getCellType()==Cell.CELL_TYPE_BLANK ||
-                this.cell.getStringCellValue()==null ||
-                this.cell.getStringCellValue().isEmpty());
+                this.getStringValue()==null ||
+                this.getStringValue().isEmpty());
     }
     
     
@@ -85,9 +85,12 @@ public class ExcelTableCell implements TableCell {
     public String getStringValue() {
         if (this.cell != null) {
             switch (cell.getCellType()) {
-                case Cell.CELL_TYPE_STRING: if (this.trimWhiteSpaces) return cell.getStringCellValue().trim(); else return cell.getStringCellValue();
-                case Cell.CELL_TYPE_NUMERIC: return String.valueOf(cell.getNumericCellValue());
+                case Cell.CELL_TYPE_STRING:
+                    String cellValue = cell.getStringCellValue();
+                    if (cellValue!=null && this.trimWhiteSpaces) return cell.getStringCellValue().trim();
+                    else return cell.getStringCellValue();
                 case Cell.CELL_TYPE_BLANK: return "";
+                case Cell.CELL_TYPE_NUMERIC: return String.valueOf(cell.getNumericCellValue());
                 case Cell.CELL_TYPE_BOOLEAN: return String.valueOf(cell.getBooleanCellValue());
                 default: return null;
             }

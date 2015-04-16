@@ -35,11 +35,12 @@ public abstract class AbstractTableRow implements TableRow {
      */
     @Override
     public String getFieldStringValue(Term field) {
+        
         List<TableCell> cells = this.getCells(field);
         String preferred = null;
         if (cells != null) {
             for (TableCell cell: cells) {
-                if (!cell.isEmpty()) {
+                if (cell!=null && !cell.isEmpty()) {
                     String value = cell.getStringValue();
                     if (value!=null) {
                         if (!value.isEmpty()) return value;
