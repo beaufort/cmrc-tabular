@@ -140,11 +140,15 @@ public class ASCIITableRow extends AbstractTableRow {
                     List<Term> fields = header.getFields();
                     
                     for (Term field: fields) {
-                        Integer index = header.getValue(field);
-                        if (index != null && index>=0 && index < tokens.length) {
-                            String value = tokens[(int)index];
-                            if (this.trimWhiteSpaces) value = value.trim();
-                            fm.put(field, new ASCIITableCell(value));
+                        List<Integer> indices = header.getValues(field);
+                        if (indices != null) {
+                            for (Integer index : indices) {
+                                if (index != null && index>=0 && index < tokens.length) {
+                                    String value = tokens[(int)index];
+                                    if (this.trimWhiteSpaces) value = value.trim();
+                                    fm.put(field, new ASCIITableCell(value));
+                                }
+                            }
                         }
                     }
                 }
